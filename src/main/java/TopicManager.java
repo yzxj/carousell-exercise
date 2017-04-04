@@ -23,32 +23,38 @@ public class TopicManager {
 		} else {
 			restOfTopicsMaxHeap.offer(topic);
 		}
+		checkHeapsAndSwapIfNeeded();
+	}
+	
+	// We maintain two queues, where the min(minHeap) > max(maxHeap)
+	protected void checkHeapsAndSwapIfNeeded() {
 		if (heapsNeedSwap()) {
 			swapHeapHeads();
 		}
 	}
-	
-	public boolean heapsNeedSwap() {
+	private boolean heapsNeedSwap() {
 		return (top20TopicsMinHeap.peek().compareTo(restOfTopicsMaxHeap.peek()) < 0);
 	}
-	
-	public void swapHeapHeads() {
+	private void swapHeapHeads() {
 		Topic toRest = top20TopicsMinHeap.poll();
 		Topic toTop = restOfTopicsMaxHeap.poll();
 		top20TopicsMinHeap.offer(toTop);
 		restOfTopicsMaxHeap.offer(toRest);
 	}
 	
+	// PQ removal is O(n), but in our case only the top 20 are modifiable so we use a minHeap to limit n to 20.
+	// Overall complexity is O(logn) considering possible swap.
 	public void upvoteTopic(Topic topic) {
 		top20TopicsMinHeap.remove(topic);
 		topic.voteUp();
 		top20TopicsMinHeap.offer(topic);
+		checkHeapsAndSwapIfNeeded();
 	}
-	
 	public void downvoteTopic(Topic topic) {
 		top20TopicsMinHeap.remove(topic);
 		topic.voteDown();
 		top20TopicsMinHeap.offer(topic);
+		checkHeapsAndSwapIfNeeded();
 	}
 	
 }

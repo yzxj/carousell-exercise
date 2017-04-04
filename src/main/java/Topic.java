@@ -10,17 +10,24 @@ public class Topic implements Comparable<Topic> {
 	}
 	
 	public Topic(String content, int upvotes, Date timeCreated) {
+		if (content.length() > 255) {
+			content = content.substring(0, 255);
+		}
 		this.content = content;
 		this.upvotes = upvotes;
 		this.timeCreated = timeCreated;
 	}
 	
 	public void voteUp() {
-		this.upvotes += 1;
+		if (this.upvotes < Integer.MAX_VALUE) {
+			this.upvotes += 1;
+		}
 	}
 	 
 	public void voteDown() {
-		this.upvotes -= 1;
+		if (this.upvotes > Integer.MIN_VALUE) {
+			this.upvotes -= 1;
+		}
 	}
 	
 	public String getContent() {
@@ -35,12 +42,9 @@ public class Topic implements Comparable<Topic> {
 		return timeCreated;
 	}
 
-	public void setTimeCreated(Date timeCreated) {
-		this.timeCreated = timeCreated;
-	}
-
 	@Override
 	public int hashCode() {
+		// Auto-generated
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
@@ -50,6 +54,7 @@ public class Topic implements Comparable<Topic> {
 
 	@Override
 	public boolean equals(Object obj) {
+		// Auto-generated
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -75,12 +80,15 @@ public class Topic implements Comparable<Topic> {
 		int otherVotes = other.getUpvotes();
 		Date otherTime = other.getTimeCreated();
 		if (this.upvotes != otherVotes) {
+			// Net votes is the main compareTo criteria
 			if (this.upvotes < otherVotes) {
 				return -1;
 			} else {
 				return 1;
 			}
 		} else {
+			// Use timeCreated as a tie-breaker for when votes are equal
+			// We want later topics to be "higher"
 			if (this.timeCreated.before(otherTime)) {
 				return -1;
 			} else if (this.timeCreated.after(otherTime)) {
