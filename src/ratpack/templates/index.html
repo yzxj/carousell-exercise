@@ -5,16 +5,24 @@
     <script src="main.js"></script>
 </head>
 <body>
-
-    <h1>Diddit</h1>
-    <div ng-app="myApp" ng-controller="myCtrl">
-        <form name="myForm" ng-submit="createTopic(newTopic)">
+    <h1>Diddit: A Digg/Reddit Clone</h1>
+    <div ng-app="didditApp" ng-controller="didditCtrl">
+        <form name="topicForm" ng-submit="createTopic(newTopic)">
             <label>
                 Post a new topic:
                 <input type="text" name="topicInput" ng-model="newTopic" required />
             </label>
             <input type="submit" id="submit" value="Submit" />
         </form>
+        <hr>
+        <div>
+            <div ng-repeat="topic in topics">
+                <button ng-click="upvote(topic)">+</button>
+                <span>{{topic.upvotes}}</span>
+                <button ng-click="downvote(topic)">-</button>
+                <span>{{topic.content}}</span>
+            </div>
+        </div>
     </div>
 </body>
 </html>
