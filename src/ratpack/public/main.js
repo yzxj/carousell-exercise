@@ -17,23 +17,33 @@ app.controller('myCtrl', ['$scope', '$http', function($scope, $http) {
         });
     };
 
+    $scope.createTopic = function(topicContent) {
+        $scope.postAndRefresh('/api/newtopic', {content: topicContent});
+    };
+
     $scope.upvote = function(topicContent, topicVotes, topicTimeCreated) {
-        $scope.vote('/api/upvote', topicContent, topicVotes, topicTimeCreated);
+        var data = {
+            content: topicContent,
+            upvotes: topicVotes,
+            timeCreated: topicTimeCreated
+        };
+        $scope.postAndRefresh('/api/upvote', data);
     };
 
     $scope.downvote = function(topicContent, topicVotes, topicTimeCreated) {
-        $scope.vote('/api/downvote', topicContent, topicVotes, topicTimeCreated);
+        var data = {
+            content: topicContent,
+            upvotes: topicVotes,
+            timeCreated: topicTimeCreated
+        };
+        $scope.postAndRefresh('/api/downvote', data);
     };
 
-    $scope.vote = function(voteUrl, topicContent, topicVotes, topicTimeCreated) {
+    $scope.postAndRefresh = function(url, data) {
         $http({
             method: 'POST',
-            url: voteUrl,
-            data: {
-                content: topicContent,
-                upvotes: topicVotes,
-                timeCreated: topicTimeCreated
-            }
+            url: url,
+            data: data
         }).then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
