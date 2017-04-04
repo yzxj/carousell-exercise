@@ -7,3 +7,8 @@ out
 *.iws
 .env
 .DS_Store
+
+.classpath
+.project
+.settings/
+bin/
