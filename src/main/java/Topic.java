@@ -98,6 +98,10 @@ public class Topic implements Comparable<Topic> {
 			}
 		}
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Topic [content=" + content + ", upvotes=" + upvotes + ", timeCreated=" + timeCreated.getTime() + "]\n";
+	}
 	
 }

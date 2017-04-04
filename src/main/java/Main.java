@@ -24,9 +24,34 @@ public class Main {
         .handlers(chain -> chain
             .get(ctx -> ctx.render(groovyTemplate("index.html")))
 
-            .get("hello", ctx -> {
-              ctx.render("Hello!");
-            })
+            .get("test", ctx -> {
+            	TopicManager tm = TopicManager.getInstance();
+            	Topic tester = new Topic("test");
+            	tm.addTopic(tester);
+            	tm.addTopic("1");
+            	tm.addTopic("2");
+            	tm.addTopic("3");
+            	tm.addTopic("4");
+            	tm.addTopic("5");
+            	tm.addTopic("6");
+            	tm.addTopic("7");
+            	tm.addTopic("8");
+            	tm.addTopic("9");
+            	tm.addTopic("10");
+            	tm.addTopic("11");
+            	tm.addTopic("12");
+            	tm.addTopic("13");
+            	tm.addTopic("14");
+            	tm.addTopic("15");
+            	tm.addTopic("16");
+            	tm.addTopic("17");
+            	tm.addTopic("18");
+            	tm.addTopic("19");
+            	tm.addTopic("20");
+            	tester.voteUp();
+            	ctx.render(TopicManager.getInstance().getTop20().toString());
+            	tm.reset();
+        	})
 
             .get("db", ctx -> {
               boolean local = !"cedar-14".equals(System.getenv("STACK"));

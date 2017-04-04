@@ -17,6 +17,12 @@ public class TopicManager {
 		return tm;
 	}
 	
+	public PriorityQueue<Topic> getTop20() {
+		return top20TopicsMinHeap;
+	}
+	public void addTopic(String str) {
+		addTopic(new Topic(str));
+	}
 	public void addTopic(Topic topic) {
 		if (top20TopicsMinHeap.size() < 20) {
 			top20TopicsMinHeap.offer(topic);
@@ -26,6 +32,12 @@ public class TopicManager {
 		checkHeapsAndSwapIfNeeded();
 	}
 	
+	// For testing purposes.
+	public void reset() {
+		top20TopicsMinHeap.clear();
+		restOfTopicsMaxHeap.clear();
+	}
+	
 	// We maintain two queues, where the min(minHeap) > max(maxHeap)
 	protected void checkHeapsAndSwapIfNeeded() {
 		if (heapsNeedSwap()) {
@@ -33,7 +45,9 @@ public class TopicManager {
 		}
 	}
 	private boolean heapsNeedSwap() {
-		return (top20TopicsMinHeap.peek().compareTo(restOfTopicsMaxHeap.peek()) < 0);
+		return (!top20TopicsMinHeap.isEmpty() &&
+				!restOfTopicsMaxHeap.isEmpty() && 
+				(top20TopicsMinHeap.peek().compareTo(restOfTopicsMaxHeap.peek()) < 0));
 	}
 	private void swapHeapHeads() {
 		Topic toRest = top20TopicsMinHeap.poll();
@@ -43,7 +57,6 @@ public class TopicManager {
 	}
 	
 	// PQ removal is O(n), but in our case only the top 20 are modifiable so we use a minHeap to limit n to 20.
-	// Overall complexity is O(logn) considering possible swap.
 	public void upvoteTopic(Topic topic) {
 		top20TopicsMinHeap.remove(topic);
 		topic.voteUp();
