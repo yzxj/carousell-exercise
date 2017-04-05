@@ -54,7 +54,7 @@ public class Topic implements Comparable<Topic> {
 
 	@Override
 	public boolean equals(Object obj) {
-		// Auto-generated
+		// Auto-generated: Does NOT include upvotes.
 		if (this == obj)
 			return true;
 		if (obj == null)

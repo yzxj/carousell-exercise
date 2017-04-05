@@ -4,9 +4,12 @@ import ratpack.server.RatpackServer;
 import ratpack.groovy.template.TextTemplateModule;
 import ratpack.guice.Guice;
 
+import ratpack.jackson.Jackson;
 import static ratpack.groovy.Groovy.groovyTemplate;
+import static ratpack.jackson.Jackson.json;
 
 import java.util.*;
+import java.util.Date;
 import java.sql.*;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
@@ -49,9 +52,17 @@ public class Main {
             	tm.addTopic("19");
             	tm.addTopic("20");
             	tester.voteUp();
-            	ctx.render(TopicManager.getInstance().getTop20().toString());
+            	ctx.render(TopicManager.getInstance().getTopics().toString());
             	tm.reset();
         	})
+            
+            .get("api/topics", ctx -> {
+            	TopicManager tm = TopicManager.getInstance();
+            	tm.addTopic("18", 0, 1491395735400L);
+            	tm.addTopic("19", 1, 1491395735401L);
+            	tm.addTopic("20", 0, 1491395735402L);
+            	ctx.render(json(tm.getTopics()));
+            })
 
             .get("db", ctx -> {
               boolean local = !"cedar-14".equals(System.getenv("STACK"));

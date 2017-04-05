@@ -1,9 +1,12 @@
 import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.Date;
+import java.util.TreeSet;
+import java.util.TreeSet;
 
 public class TopicManager {
-	private PriorityQueue<Topic> top20TopicsMinHeap = new PriorityQueue<Topic>();
-	private PriorityQueue<Topic> restOfTopicsMaxHeap = new PriorityQueue<Topic>(Collections.reverseOrder());
+	// We maintain two sorted lists, where min(list1) > max(list2)
+	private TreeSet<Topic> top20Topics = new TreeSet<Topic>(Collections.reverseOrder());
+	private TreeSet<Topic> restOfTopics = new TreeSet<Topic>(Collections.reverseOrder());
 	
 	// Note: Singleton
 	private static TopicManager tm;
@@ -17,57 +20,58 @@ public class TopicManager {
 		return tm;
 	}
 	
-	public PriorityQueue<Topic> getTop20() {
-		return top20TopicsMinHeap;
+	public TreeSet<Topic> getTopics() {
+		return top20Topics;
 	}
 	public void addTopic(String str) {
 		addTopic(new Topic(str));
 	}
+	public void addTopic(String str, int votes, long time) {
+		addTopic(new Topic(str, votes, new Date(time)));
+	}
 	public void addTopic(Topic topic) {
-		if (top20TopicsMinHeap.size() < 20) {
-			top20TopicsMinHeap.offer(topic);
+		if (top20Topics.size() < 20) {
+			top20Topics.add(topic);
 		} else {
-			restOfTopicsMaxHeap.offer(topic);
+			restOfTopics.add(topic);
 		}
-		checkHeapsAndSwapIfNeeded();
+		checkListsAndReorderIfNeeded();
 	}
 	
 	// For testing purposes.
 	public void reset() {
-		top20TopicsMinHeap.clear();
-		restOfTopicsMaxHeap.clear();
+		top20Topics.clear();
+		restOfTopics.clear();
 	}
 	
-	// We maintain two queues, where the min(minHeap) > max(maxHeap)
-	protected void checkHeapsAndSwapIfNeeded() {
-		if (heapsNeedSwap()) {
-			swapHeapHeads();
+	protected void checkListsAndReorderIfNeeded() {
+		if (listsNeedReordering()) {
+			reorderLists();
 		}
 	}
-	private boolean heapsNeedSwap() {
-		return (!top20TopicsMinHeap.isEmpty() &&
-				!restOfTopicsMaxHeap.isEmpty() && 
-				(top20TopicsMinHeap.peek().compareTo(restOfTopicsMaxHeap.peek()) < 0));
+	private boolean listsNeedReordering() {
+		return (!top20Topics.isEmpty() &&
+				!restOfTopics.isEmpty() && 
+				(top20Topics.last().compareTo(restOfTopics.first()) < 0));
 	}
-	private void swapHeapHeads() {
-		Topic toRest = top20TopicsMinHeap.poll();
-		Topic toTop = restOfTopicsMaxHeap.poll();
-		top20TopicsMinHeap.offer(toTop);
-		restOfTopicsMaxHeap.offer(toRest);
+	private void reorderLists() {
+		Topic toRest = top20Topics.pollLast();
+		Topic toTop = restOfTopics.pollFirst();
+		top20Topics.add(toTop);
+		restOfTopics.add(toRest);
 	}
 	
-	// PQ removal is O(n), but in our case only the top 20 are modifiable so we use a minHeap to limit n to 20.
 	public void upvoteTopic(Topic topic) {
-		top20TopicsMinHeap.remove(topic);
+		top20Topics.remove(topic);
 		topic.voteUp();
-		top20TopicsMinHeap.offer(topic);
-		checkHeapsAndSwapIfNeeded();
+		top20Topics.add(topic);
+		checkListsAndReorderIfNeeded();
 	}
 	public void downvoteTopic(Topic topic) {
-		top20TopicsMinHeap.remove(topic);
+		top20Topics.remove(topic);
 		topic.voteDown();
-		top20TopicsMinHeap.offer(topic);
-		checkHeapsAndSwapIfNeeded();
+		top20Topics.add(topic);
+		checkListsAndReorderIfNeeded();
 	}
 	
 }
