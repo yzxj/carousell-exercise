@@ -21,20 +21,20 @@ app.controller('didditCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.postAndRefresh('/api/newtopic', {content: topicContent});
     };
 
-    $scope.upvote = function(topicContent, topicVotes, topicTimeCreated) {
+    $scope.upvote = function(topic) {
         var data = {
-            content: topicContent,
-            upvotes: topicVotes,
-            timeCreated: topicTimeCreated
+            content: topic.content,
+            upvotes: topic.upvotes,
+            timeCreated: topic.timeCreated
         };
         $scope.postAndRefresh('/api/upvote', data);
     };
 
-    $scope.downvote = function(topicContent, topicVotes, topicTimeCreated) {
+    $scope.downvote = function(topic) {
         var data = {
-            content: topicContent,
-            upvotes: topicVotes,
-            timeCreated: topicTimeCreated
+            content: topic.content,
+            upvotes: topic.upvotes,
+            timeCreated: topic.timeCreated
         };
         $scope.postAndRefresh('/api/downvote', data);
     };

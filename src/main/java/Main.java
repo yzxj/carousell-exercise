@@ -68,6 +68,28 @@ public class Main {
             		ctx.render(json(tm.getTopics())); }
             	);
             })
+            .post("api/upvote", ctx -> {
+            	TopicManager tm = TopicManager.getInstance();
+            	ctx.parse(jsonNode()).then(n -> {
+            		String content = n.get("content").asText();
+            		int upvotes = n.get("upvotes").asInt();
+            		Date timeCreated = new Date(n.get("timeCreated").asLong());
+            		Topic topicToVote = new Topic(content, upvotes, timeCreated);
+            		tm.upvoteTopic(topicToVote);
+            		ctx.render(json(tm.getTopics())); }
+            	);
+            })
+            .post("api/downvote", ctx -> {
+            	TopicManager tm = TopicManager.getInstance();
+            	ctx.parse(jsonNode()).then(n -> {
+            		String content = n.get("content").asText();
+            		int upvotes = n.get("upvotes").asInt();
+            		Date timeCreated = new Date(n.get("timeCreated").asLong());
+            		Topic topicToVote = new Topic(content, upvotes, timeCreated);
+            		tm.downvoteTopic(topicToVote);
+            		ctx.render(json(tm.getTopics())); }
+            	);
+            })
 
             .get("db", ctx -> {
               boolean local = !"cedar-14".equals(System.getenv("STACK"));
