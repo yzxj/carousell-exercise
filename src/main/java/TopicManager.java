@@ -1,7 +1,6 @@
 import java.util.Collections;
 import java.util.Date;
 import java.util.TreeSet;
-import java.util.TreeSet;
 
 public class TopicManager {
 	// We maintain two sorted lists, where min(list1) > max(list2)
