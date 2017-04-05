@@ -1,4 +1,4 @@
-# Digg | Carousell Code Exercise
+# Diddit | Carousell Code Exercise
 
 Initialized using boilerplate code from the [Getting Started with Gradle on Heroku](https://devcenter.heroku.com/articles/getting-started-with-gradle-on-heroku) article.
 
