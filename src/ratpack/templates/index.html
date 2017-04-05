@@ -10,17 +10,20 @@
         <form name="topicForm" ng-submit="createTopic(newTopic); newTopic=''">
             <label>
                 Post a new topic:
-                <input type="text" name="topicInput" ng-model="newTopic" required />
+                <input type="text" name="topicInput" ng-model="newTopic" maxlength="255" required />
             </label>
             <input type="submit" id="submit" value="Submit" />
         </form>
         <hr>
         <div>
+            <div ng-if="topics.length==0">
+                No topics yet. Try posting one above!
+            </div>
             <div ng-repeat="topic in topics">
                 <button ng-click="upvote(topic)">+</button>
                 <span>{{topic.upvotes}}</span>
                 <button ng-click="downvote(topic)">-</button>
-                <span>{{topic.content}}</span>
+                <span><strong>{{topic.content}}</strong></span>
             </div>
         </div>
     </div>
