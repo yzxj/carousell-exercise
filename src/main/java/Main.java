@@ -28,6 +28,7 @@ public class Main {
             })
             .post("api/newtopic", ctx -> {
             	TopicManager tm = TopicManager.getInstance();
+            	// This convoluted statement parses the POST data into variable n.
             	ctx.parse(jsonNode()).then(n -> {
             		tm.addTopic(n.get("content").asText());
             		ctx.render(json(tm.getTopics())); }

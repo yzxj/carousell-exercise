@@ -1,6 +1,9 @@
 import java.util.Date;
 
 public class Topic implements Comparable<Topic> {
+	// I took the liberty of using net-upvotes instead of upvotes and downvotes
+	// because in the not-net case upvotes are permanent so once 20 topics have votes,
+	// new ones will never appear.
 	private String content;
 	private int upvotes;
 	private Date timeCreated;
