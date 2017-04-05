@@ -7,6 +7,7 @@ import ratpack.guice.Guice;
 import ratpack.jackson.Jackson;
 import static ratpack.groovy.Groovy.groovyTemplate;
 import static ratpack.jackson.Jackson.json;
+import static ratpack.jackson.Jackson.jsonNode;
 
 import java.util.*;
 import java.util.Date;
@@ -58,10 +59,14 @@ public class Main {
             
             .get("api/topics", ctx -> {
             	TopicManager tm = TopicManager.getInstance();
-            	tm.addTopic("18", 0, 1491395735400L);
-            	tm.addTopic("19", 1, 1491395735401L);
-            	tm.addTopic("20", 0, 1491395735402L);
             	ctx.render(json(tm.getTopics()));
+            })
+            .post("api/newtopic", ctx -> {
+            	TopicManager tm = TopicManager.getInstance();
+            	ctx.parse(jsonNode()).then(n -> {
+            		tm.addTopic(n.get("content").asText());
+            		ctx.render(json(tm.getTopics())); }
+            	);
             })
 
             .get("db", ctx -> {
