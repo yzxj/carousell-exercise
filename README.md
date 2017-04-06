@@ -2,7 +2,7 @@
 
 Initialized using boilerplate code from the [Getting Started with Gradle on Heroku](https://devcenter.heroku.com/articles/getting-started-with-gradle-on-heroku) article.
 
-The app runs on Java/Ratpack which serves a single-page AngularJS app using the public folder opened by Ratpack. The data structure, which uses two sorted lists (implemented using TreeSet) is accessible via APIs at '/api/[apiname]'.
+The app runs on Java/Ratpack which serves a single-page AngularJS app using the public folder opened by Ratpack. The in-memory data structure, which uses two sorted lists (implemented using TreeSet), is accessible via APIs at '/api/[apiname]'.
 
 Demo can be found here: https://yzxj-diddit.herokuapp.com/
 
@@ -12,15 +12,15 @@ Make sure you have Java installed.  Also, install the [Heroku Toolbelt](https://
 
 For Linux/Unix/Mac:
 ```sh
-$ git clone https://github.com/heroku/gradle-getting-started.git
-$ cd gradle-getting-started
+$ git clone https://github.com/yzxj/carousell-exercise.git yzxj
+$ cd yzxj
 $ ./gradlew stage
 $ heroku local web
 ```
 For Windows:
 ```sh
-$ git clone https://github.com/heroku/gradle-getting-started.git
-$ cd gradle-getting-started
+$ git clone https://github.com/yzxj/carousell-exercise.git yzxj
+$ cd yzxj
 $ gradlew.bat stage
 $ heroku local web -f Procfile.windows
 ```
